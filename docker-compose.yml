@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  node:
+    image: node:alpine3.12
+    command: sh -c "tail -f /dev/null"
+    working_dir: /var/www
+    restart: always
+    volumes:
+      - ./:/var/www
