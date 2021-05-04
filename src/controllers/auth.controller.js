@@ -1,5 +1,3 @@
-const { AuthService } = require("../services");
-
 let _authService = null;
 
 class AuthController {

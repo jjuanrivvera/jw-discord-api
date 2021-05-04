@@ -10,4 +10,10 @@ const userSchema = new mongoose.Schema({
   refresh_token: "string",
 });
 
+userSchema.methods.toJSON = function() {
+  let user = this.toObject();
+  delete user.password;
+  return user;
+};
+
 module.exports = mongoose.model("user", userSchema);

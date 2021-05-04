@@ -13,7 +13,7 @@ module.exports = function(req, res, next) {
   jwt.verify(token, JWT_SECRET, function(err, decodedToken) {
     if (err) {
       const error = new Error();
-      error.message = "Invalid token";
+      error.message = "Unauthorized";
       error.status = 401;
       throw error;
     }

@@ -100,14 +100,14 @@ class AuthService {
 
       const discordUser = await oauth.getUser(response.data.access_token);
 
-      const userExist = await _userService.getUserByUsername(discordUser.id);
+      let user = await _userService.getUserByDiscordId(discordUser.id);
 
-      if (userExist) {
-        userExist.access_token = response.data.access_token;
-        userExist.refresh_token = response.data.refresh_token;
-        return userExist.save();
+      if (user) {
+        user.access_token = response.data.access_token;
+        user.refresh_token = response.data.refresh_token;
+        user = await user.save();
       } else {
-        const newUser = await _userService.create({
+        user = await _userService.create({
           id: discordUser.id,
           username: discordUser.username,
           discriminator: discordUser.discriminator,
@@ -116,12 +116,18 @@ class AuthService {
           access_token: response.data.access_token,
           refresh_token: response.data.refresh_token,
         });
-
-        return newUser;
       }
-    } catch (err) {
-      console.log(err);
 
+      const token = generateToken(user);
+
+      return {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        avatar: user.avatar,
+        token: token
+      };
+    } catch (err) {
       const error = new Error();
       error.status = 400;
       error.message = "Invalid Code";
