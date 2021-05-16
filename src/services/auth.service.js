@@ -53,10 +53,10 @@ class AuthService {
     return { token, user: userExist };
   }
 
-  async generateDiscordUrl() {
+  async generateDiscordUrl(redirect_uri = _config.REDIRECT) {
     const params = {
       client_id: _config.CLIENT_ID,
-      redirect_uri: encodeURI(_config.REDIRECT),
+      redirect_uri: encodeURI(redirect_uri),
       response_type: "code",
       scope: _config.SCOPES,
     };
@@ -72,13 +72,13 @@ class AuthService {
     return { url: url };
   }
 
-  async exchangeCode(code) {
+  async exchangeCode(code, redirect_uri = _config.REDIRECT) {
     const params = {
       client_id: _config.CLIENT_ID,
       client_secret: _config.CLIENT_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: _config.REDIRECT,
+      redirect_uri: redirect_uri,
     };
 
     const url = `${_config.DISCORD_API}/oauth2/token`;

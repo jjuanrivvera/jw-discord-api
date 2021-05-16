@@ -14,4 +14,5 @@ module.exports = {
   SCOPES: process.env.SCOPES,
   OAUTH: process.env.DISCORD_OAUTH,
   DISCORD_API: process.env.DISCORD_API,
+  DISCORD_CDN: process.env.DISCORD_CDN,
 };
