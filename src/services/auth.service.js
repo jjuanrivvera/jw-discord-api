@@ -128,6 +128,7 @@ class AuthService {
         token: token
       };
     } catch (err) {
+      console.log(err);
       const error = new Error();
       error.status = 400;
       error.message = "Invalid Code";
