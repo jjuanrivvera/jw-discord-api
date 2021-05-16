@@ -18,7 +18,9 @@ class AuthController {
   }
 
   async discord(req, res) {
-    const url = await _authService.generateDiscordUrl();
+    const { body } = req;
+
+    const url = await _authService.generateDiscordUrl(body.redirect_uri);
 
     return res.send(url);
   }
@@ -26,7 +28,7 @@ class AuthController {
   async exchangeCode(req, res) {
     const { body } = req;
     const code = body.code;
-    const data = await _authService.exchangeCode(code);
+    const data = await _authService.exchangeCode(code, body.redirect_uri);
 
     return res.send(data);
   }
