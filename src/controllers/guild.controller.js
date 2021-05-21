@@ -27,6 +27,18 @@ class GuildController {
 
     return res.send(guilds);
   }
+
+  async find(req, res) {
+    const { guildId } = req.params;
+
+    const guild = await _guildService.get(guildId);
+
+    if (!guild) {
+      return res.sendStatus(404);
+    }
+
+    return res.send(guild);
+  }
 }
 
 module.exports = GuildController;

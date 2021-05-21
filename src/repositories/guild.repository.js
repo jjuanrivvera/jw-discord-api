@@ -6,7 +6,9 @@ class GuildRepository {
         _client = client;
     }
 
-    async get() {}
+    async get(guildId) {
+        return await _client.guilds.cache.find(guild => guild.id === guildId);
+    }
 
     async getAll(user) {
         const discordApi = new DiscordApi(user);
