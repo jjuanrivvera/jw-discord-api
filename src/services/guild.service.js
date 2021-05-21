@@ -5,6 +5,10 @@ class GuildService {
     _guilRepository = GuildRepository;
   }
 
+  async get(guildId) {
+    return await _guilRepository.get(guildId);
+  }
+
   async getAll(user) {
     return await _guilRepository.getAll(user);
   }

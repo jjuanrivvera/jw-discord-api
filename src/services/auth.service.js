@@ -103,6 +103,9 @@ class AuthService {
       let user = await _userService.getUserByDiscordId(discordUser.id);
 
       if (user) {
+        user.username = discordUser.username;
+        user.avatar = discordUser.avatar;
+        user.discriminator = discordUser.discriminator;
         user.access_token = response.data.access_token;
         user.refresh_token = response.data.refresh_token;
         user = await user.save();
