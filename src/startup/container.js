@@ -14,7 +14,18 @@ const config = require('../config');
 const app = require('.');
 
 // Login to Discord
-client.login(process.env.DISCORD_TOKEN);
+client.once('ready', () => {
+    console.log(`API Discord client logged in as ${client.user.tag}!`);
+    console.log(`Connected to ${client.guilds.cache.size} guilds`);
+});
+
+client.on('error', (error) => {
+    console.error('Discord client error:', error);
+});
+
+client.login(process.env.DISCORD_TOKEN).catch(err => {
+    console.error('Failed to login to Discord:', err);
+});
 
 // Services
 const {

@@ -30,17 +30,48 @@ class GuildService {
     }
 
     async userHasAccess(user, guildId) {
-        const userGuilds = await this.getAll(user);
-        return userGuilds.some(g => g.id === guildId);
+        // First, check if bot is in the guild using local cache (no API call)
+        const botGuild = _client.guilds.cache.get(guildId);
+        if (!botGuild) {
+            // Bot isn't in this guild, so we can't provide access
+            return false;
+        }
+
+        // Try to get member from cache first to avoid API call
+        const member = botGuild.members.cache.get(user.discordId);
+        if (member) {
+            return true;
+        }
+
+        // If not in cache, try to fetch the member (this is one API call, much better than getAll)
+        try {
+            await botGuild.members.fetch(user.discordId);
+            return true;
+        } catch {
+            // User is not a member of this guild
+            return false;
+        }
     }
 
     async userHasAdminAccess(user, guildId) {
-        const userGuilds = await this.getAll(user);
-        const guild = userGuilds.find(g => g.id === guildId);
-        if (!guild) return false;
+        // First, check if bot is in the guild using local cache (no API call)
+        const botGuild = _client.guilds.cache.get(guildId);
+        if (!botGuild) {
+            return false;
+        }
 
-        // Check if owner or has ADMINISTRATOR permission (0x8)
-        return guild.owner || (guild.permissions & 0x8) !== 0;
+        // Try to get member from cache or fetch
+        let member = botGuild.members.cache.get(user.discordId);
+        if (!member) {
+            try {
+                member = await botGuild.members.fetch(user.discordId);
+            } catch {
+                return false;
+            }
+        }
+
+        // Check if owner or has ADMINISTRATOR permission
+        return botGuild.ownerId === user.discordId || member.permissions.has('Administrator');
     }
 
     async getGuildChannels(guildId) {

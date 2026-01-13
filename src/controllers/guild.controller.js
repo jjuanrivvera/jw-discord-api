@@ -90,14 +90,19 @@ class GuildController {
     }
 
     async getChannels(req, res) {
+        console.log('getChannels called for guildId:', req.params.guildId);
         const { guildId } = req.params;
 
+        console.log('Checking user access for:', req.user?.discordId);
         const hasAccess = await _guildService.userHasAccess(req.user, guildId);
+        console.log('Has access:', hasAccess);
         if (!hasAccess) {
             return res.status(403).json({ error: 'Access denied' });
         }
 
+        console.log('Fetching channels...');
         const channels = await _guildService.getGuildChannels(guildId);
+        console.log('Channels fetched:', channels?.length);
 
         return res.json(channels);
     }

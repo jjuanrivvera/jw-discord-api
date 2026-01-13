@@ -1,19 +1,19 @@
-const BaseRepository = require("./base.repository");
+const BaseRepository = require('./base.repository');
 let _user = null;
 
 class UserRepository extends BaseRepository {
-  constructor({ User }) {
-    super(User);
-    _user = User;
-  }
+    constructor({ User }) {
+        super(User);
+        _user = User;
+    }
 
-  async getUserByUsername(username) {
-    return await _user.findOne({ username });
-  }
+    async getUserByUsername(username) {
+        return await _user.findOne({ username });
+    }
 
-  async getUserByDiscordId(id) {
-    return await _user.findOne({ id: id });
-  }
+    async getUserByDiscordId(id) {
+        return await _user.findOne({ discordId: id });
+    }
 }
 
 module.exports = UserRepository;

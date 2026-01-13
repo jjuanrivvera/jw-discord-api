@@ -4,7 +4,7 @@ const config = require('../config');
 class DiscordApi extends BaseApi {
     constructor(user) {
         super(config.DISCORD_API, {
-            Authorization: `Bearer ${user.access_token}`
+            Authorization: `Bearer ${user.accessToken}`
         });
     }
 

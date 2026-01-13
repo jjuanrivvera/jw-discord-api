@@ -1,8 +1,16 @@
-module.exports = (err, req, res, next) => {
-  const httpStatus = err.status || 500;
+module.exports = (err, req, res, _next) => {
+    const httpStatus = err.status || 500;
 
-  return res.status(httpStatus).send({
-    status: httpStatus,
-    message: err.message || "Internal server error"
-  });
+    // Log all errors for debugging
+    console.error('API Error:', {
+        status: httpStatus,
+        message: err.message,
+        path: req.path,
+        stack: err.stack
+    });
+
+    return res.status(httpStatus).send({
+        status: httpStatus,
+        message: err.message || 'Internal server error'
+    });
 };
