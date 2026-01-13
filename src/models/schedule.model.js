@@ -1,11 +1,30 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const scheduleSchema = new mongoose.Schema({
-  guild: "string",
-  time: "string",
-  channel: "string",
-  action: "string",
-  last: "string",
+    guild: {
+        type: String,
+        required: true,
+        index: true
+    },
+    time: {
+        type: String,
+        required: true
+    },
+    channelId: {
+        type: String,
+        required: true
+    },
+    action: {
+        type: String,
+        required: true,
+        enum: ['sendDailyText', 'sendRandomTopic']
+    },
+    last: {
+        type: String,
+        default: ''
+    }
+}, {
+    timestamps: true
 });
 
-module.exports = mongoose.model("schedule", scheduleSchema);
+module.exports = mongoose.model('schedule', scheduleSchema);

@@ -1,9 +1,12 @@
-let _client = null;
 const { DiscordApi } = require('../api');
 
+let _client = null;
+let _Guild = null;
+
 class GuildRepository {
-    constructor({client}) {
+    constructor({ client, Guild }) {
         _client = client;
+        _Guild = Guild;
     }
 
     async get(guildId) {
@@ -19,11 +22,34 @@ class GuildRepository {
         return await _client.guilds.cache;
     }
 
-    async create() {}
+    async findByGuildId(guildId) {
+        return await _Guild.findOne({ id: guildId });
+    }
 
-    async update() {}
+    async upsertByGuildId(guildId, data) {
+        return await _Guild.findOneAndUpdate(
+            { id: guildId },
+            { $set: data },
+            { new: true, upsert: true }
+        );
+    }
 
-    async delete() {}
+    async create(data) {
+        return await _Guild.create(data);
+    }
+
+    async update(guildId, data) {
+        return await _Guild.findOneAndUpdate(
+            { id: guildId },
+            { $set: data },
+            { new: true }
+        );
+    }
+
+    async delete(guildId) {
+        await _Guild.findOneAndDelete({ id: guildId });
+        return true;
+    }
 }
 
 module.exports = GuildRepository;

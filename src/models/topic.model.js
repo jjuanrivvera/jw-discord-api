@@ -1,9 +1,22 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const topictSchema = new mongoose.Schema({
-  name: "string",
-  discussion: "string",
-  query: "string",
+const topicSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    discussion: {
+        type: String,
+        required: true
+    },
+    query: {
+        type: String,
+        default: ''
+    }
+}, {
+    timestamps: true
 });
 
-module.exports = mongoose.model("topic", topictSchema);
+topicSchema.index({ name: 'text', discussion: 'text' });
+
+module.exports = mongoose.model('topic', topicSchema);
