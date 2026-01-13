@@ -1,15 +1,10 @@
-const container = require("./src/startup/container");
-const server = container.resolve("app");
-const { MONGO_DSN } = container.resolve("config");
+const container = require('./src/startup/container');
+const server = container.resolve('app');
+const { MONGO_DSN } = container.resolve('config');
 
-const mongoose = require("mongoose");
-mongoose.set("useCreateIndex", true);
+const mongoose = require('mongoose');
 
 mongoose
-  .connect(MONGO_DSN, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => server.start())
-  .catch(console.log);
+    .connect(MONGO_DSN)
+    .then(() => server.start())
+    .catch(console.log);
